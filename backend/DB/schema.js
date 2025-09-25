@@ -12,7 +12,7 @@ const orderSchema = new mongoose.Schema({
     title: {type: String},
     pickupLocation: {type: String},
     dropLocation: {type: String},
-    staus: {type: String, enum: ['PENDING','ASSIGNED', 'DELIVERED'], default: 'PENDING'},
+    status: {type: String, enum: ['PENDING','ASSIGNED', 'DELIVERED'], default: 'PENDING'},
     assignTo : {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
@@ -22,6 +22,10 @@ const orderSchema = new mongoose.Schema({
         ref: 'User'
     },
     cretedAt : {
+        type: Date,
+        default: Date.now
+    },
+    updateAt : {
         type: Date,
         default: Date.now
     }

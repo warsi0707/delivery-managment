@@ -7,7 +7,6 @@ const { authChecker } = require('../Middleware/authChecker');
 
 registerRoute.post("/signup", async(req, res)=>{
     const {username, email, password,confirmPassword, role} = req.body;
-    console.log(username, email, password,confirmPassword,)
     try{
         if(!username || !email || !password || !confirmPassword ){
             return res.status(400).json({error: "All fields are required"})
@@ -34,7 +33,6 @@ registerRoute.post("/signup", async(req, res)=>{
 
 registerRoute.post("/signin", async(req, res)=>{
     const {email, password} = req.body;
-    console.log(email, password)
     try{
         const user = await User.findOne({email})
         if(!user){
@@ -45,6 +43,11 @@ registerRoute.post("/signin", async(req, res)=>{
             return res.status(400).json({message: "Invalid password"})
         }
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET)
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'strict'
+        })
         res.status(200).json({
             token:token,
             message: "User logged in successfully"
@@ -59,6 +62,15 @@ registerRoute.get("/profile", authChecker, async(req, res)=>{
     const user = await User.findById(req.user.id)
     res.status(200).json({user})
 })
+registerRoute.delete("/logout", authChecker, async(req, res)=>{
+    try{
+        res.clearCookie('token')
+        res.status(200).json({message: "User logged out successfully"})
+    }catch(error){
+        res.status(404).json({message: "User not found"})
+    }
+})
+
 
 module.exports = {
     registerRoute

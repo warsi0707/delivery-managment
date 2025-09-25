@@ -6,20 +6,26 @@ import { RxCross1 } from "react-icons/rx";
 import { useContext, useState } from "react";
 import { UserAuthContext } from "@/context/AuthContext";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { BackendUrl } from "@/utils/BackendUrl";
 
 export default function Navbar() {
   const [handleMenu, setHandleMenu] = useState(false)
   const {isAuthenticated, setIsAuthenticated, user, setUser} = useContext(UserAuthContext)
-  console.log(user)
-  console.log(isAuthenticated)
+  const router = useRouter()
 
-  const handleLogout =()=>{
+  const handleLogout = async()=>{ 
     try{
-      const token = localStorage.getItem('token')
-      if(token){
-        localStorage.removeItem('token')
+      const response = await fetch(`${BackendUrl}/register/logout`, {
+        method: 'DELETE',
+        credentials: 'include'
+      })
+      const result = await response.json()
+      if(response.status ==200){
+        toast.success(result.message)
         setIsAuthenticated(false)
-        toast.success("Logout")
+        setUser(null)
+        router.push("/signin")
       }
     }catch(error){
       toast.error("Failed")
@@ -33,9 +39,9 @@ export default function Navbar() {
         <Link href={"/"} className=" flex items-end text-center gap-2 text-xl"><p className="text-3xl"><TbTruckDelivery/></p> <p>Dashboard</p></Link>
       </div>
       <div className="hidden md:flex items-center gap-5">
-        {user && user.user.role === 'ADMIN' &&
+        {user?.role === 'ADMIN' &&
         <Link href={"/create-order"}>Create-Order</Link>}
-        {isAuthenticated == true? 
+        {isAuthenticated && isAuthenticated == true? 
         <button className="cursor-pointer" onClick={handleLogout}>Logout</button>:  
         <>
         <Link href={"/signin"}>Signin</Link>

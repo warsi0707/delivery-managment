@@ -24,6 +24,7 @@ export default function SignIn() {
         headers: {
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({email, password})
       })
       const result = await response.json()
@@ -31,7 +32,6 @@ export default function SignIn() {
         setLoading(false)
         router.push("/")
         toast.success(result.message)
-        localStorage.setItem('token',result.token)
         setIsAuthenticated(true)
       }else{
         toast.error(result.error)

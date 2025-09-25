@@ -4,7 +4,7 @@ const { authChecker } = require('../Middleware/authChecker')
 const adminRoute = express.Router()
 
 adminRoute.post("/create-order", authChecker, async (req, res) => {
-    const { title, pickupLocation, dropLocation, assignTo } = req.body
+    const { title, pickupLocation, dropLocation, assignTo,status } = req.body
     try {
         if (!title || !pickupLocation || !dropLocation || !assignTo) {
             return res.status(400).json({ error: "All fields are required" })
@@ -25,7 +25,7 @@ adminRoute.post("/create-order", authChecker, async (req, res) => {
             dropLocation,
             assignTo: findParter._id,
             assignBy: req.user.id,
-            staus: 'ASSIGNED'
+            staus: status
         })
         res.status(200).json({ message: "Order created successfully" })
         // const order = await Order.create({title, pickupLocation, dropLocation,assignTo: findParter._id})
@@ -37,7 +37,7 @@ adminRoute.post("/create-order", authChecker, async (req, res) => {
 })
 adminRoute.get("/orders", authChecker, async (req, res) => {
     try {
-        const orders = await Order.find({ assignBy: req.user.id })
+        const orders = await Order.find({ assignBy: req.user.id }).populate('assignBy assignTo')
         if (!orders || orders.length === 0) {
             return res.status(404).json({
                 error: "Orders not found",
@@ -95,7 +95,7 @@ adminRoute.delete("/delete-order/:id", authChecker, async (req, res) => {
 
 adminRoute.get("/partners", authChecker, async (req, res) => {
     try {
-        const partners = await User.find({ role: 'PARTNER' })
+        const partners = await User.find({ role: 'PARTNER' }).select('username')
     if (!partners || partners.length === 0) {
         return res.status(404).json({ error: "Partners not found" })
     }
@@ -104,7 +104,25 @@ adminRoute.get("/partners", authChecker, async (req, res) => {
         res.status(404).json({ error: "Partners not found" })
     }
 })
-
+adminRoute.get("/order/:id", authChecker, async(req, res)=>{
+    const {id} = req.params;
+    try{
+        const order = await Order.findById(id).populate('assignBy assignTo', 'username email role')
+        if(!order && order.length ==0){
+            return res.status(404).json({
+                error: "Order not found",
+                order: []
+            })
+        }
+        res.json({
+            order: order
+        })
+    }catch(error){
+        res.status(404).json({
+            error: error
+        })
+    }
+})
 
 
 

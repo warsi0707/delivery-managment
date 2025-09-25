@@ -13,14 +13,15 @@ export default function AuthContext({children}) {
         try{
             const response = await fetch(`${BackendUrl}/register/profile`, {
                 method: 'GET',
-                credentials: 'include',
-                headers:{
-                    token: localStorage.getItem('token')
-                }
+                credentials: 'include'
             })
             const result = await response.json()
-            console.log(response)
-            console.log(result)
+            if(response.status ==200){
+                setIsAuthenticated(true)
+                setUser(result.user)
+            }else{
+                setIsAuthenticated(false)
+            }
         }catch(error){
             console.error(error)
         }
