@@ -7,7 +7,7 @@ const { adminRoute } = require('./routes/admin')
 const { registerRoute } = require('./routes/register')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-
+const path = require("path")
 
 app.use(express.json())
 app.use(cookieParser())
