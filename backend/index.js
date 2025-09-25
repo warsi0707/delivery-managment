@@ -5,9 +5,13 @@ const mongoose = require('mongoose')
 const { partnerRoute } = require('./routes/partner')
 const { adminRoute } = require('./routes/admin')
 const { registerRoute } = require('./routes/register')
+const cors = require('cors')
 
 app.use(express.json())
-
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}))
 app.use("/api/v1/admin", adminRoute)
 app.use("/api/v1/partner", partnerRoute)
 app.use("/api/v1/register", registerRoute)
