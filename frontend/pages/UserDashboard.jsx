@@ -1,13 +1,10 @@
 'use client'
-
 import OrderCard from "@/components/OrderCard"
-import { UserAuthContext } from "@/context/AuthContext"
 import { BackendUrl } from "@/utils/BackendUrl"
-import { useContext, useEffect, useState } from "react"
+import {  useEffect, useState } from "react"
 
 export default function UserDashboard() {
   const [data, setData] = useState([])
-  const {loading, setLoading} = useContext(UserAuthContext)
 
   const getOrders =async()=>{
     const response = await fetch(`${BackendUrl}/partner/orders`, {

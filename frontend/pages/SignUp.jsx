@@ -4,7 +4,7 @@ import { UserAuthContext } from '@/context/AuthContext'
 import { BackendUrl } from '@/utils/BackendUrl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useContext, useRef } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 
 export default function SignUp() {
@@ -12,7 +12,7 @@ export default function SignUp() {
   const emailRef = useRef('')
   const passwordRef = useRef('')
   const confirmPassRef = useRef('')
-  const {loading, setLoading} = useContext(UserAuthContext)
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   const handleSignUp =async(e)=>{

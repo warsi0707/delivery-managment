@@ -19,9 +19,7 @@ export default function CreateOrder() {
       const response = await fetch(`${BackendUrl}/admin/partners`, {
         method: 'GET',
         credentials: 'include',
-        headers: {
-          token : localStorage.getItem('token')
-        }
+        
       })
       const result = await response.json()
       if(response.status ==200){
@@ -34,6 +32,7 @@ export default function CreateOrder() {
   const handleAssign =async(e)=>{
     e.preventDefault()
 
+
     const title = titleRef.current.value;
     const pickupLocation = pickupRef.current.value;
     const dropLocation = dropRef.current.value;
@@ -43,14 +42,14 @@ export default function CreateOrder() {
       const response = await fetch(`${BackendUrl}/admin/create-order`, {
         method:'POST',
         headers: {
-          'Content-Type': "application/json",
-          token : localStorage.getItem('token')
+          'Content-Type': "application/json"
         },
+        credentials: 'include',
         body: JSON.stringify({title, pickupLocation, dropLocation, assignTo,status})
       })
       const result = await response.json()
       if(response.status ==200){
-        router.push("/")
+        router.push("/admin/dashboard")
         toast.success(result.message)
       }else{
         toast.error(result.error)

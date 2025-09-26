@@ -1,14 +1,14 @@
-'use client'
-import { UserAuthContext } from '@/context/AuthContext'
+"use client"
 import { BackendUrl } from '@/utils/BackendUrl'
 import { useParams } from 'next/navigation'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+
 
 export default function OrderDetails() {
     const {id} = useParams()
     const [data, setData] = useState({})
-    const {loading, setLoading} = useContext(UserAuthContext)
+    const [loading, setLoading] = useState(false)
     const [status, setStatus] = useState("")
 
 
@@ -57,6 +57,7 @@ export default function OrderDetails() {
     }
 
     useEffect(()=>{
+        if(!id) return 
         handleGetOrder()
     },[id])
     

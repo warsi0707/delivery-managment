@@ -40,7 +40,11 @@ export default function Navbar() {
       </div>
       <div className="hidden md:flex items-center gap-5">
         {user?.role === 'ADMIN' &&
-        <Link href={"/create-order"}>Create-Order</Link>}
+        <div className="flex gap-2 items-center">
+          <Link href={"/create-order"}>Create-Order</Link>
+        <Link href={"/admin/dashboard"}>Admin Dashboard</Link>
+        </div>
+        }
         {isAuthenticated && isAuthenticated == true? 
         <button className="cursor-pointer" onClick={handleLogout}>Logout</button>:  
         <>

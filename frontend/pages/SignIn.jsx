@@ -4,14 +4,15 @@ import { UserAuthContext } from '@/context/AuthContext'
 import { BackendUrl } from '@/utils/BackendUrl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useContext, useRef } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 
 export default function SignIn() {
   const emailRef = useRef('')
   const passwordRef = useRef('')
   const router = useRouter()
-  const {isAuthenticated, setIsAuthenticated,loading, setLoading} = useContext(UserAuthContext)
+  const {isAuthenticated, setIsAuthenticated} = useContext(UserAuthContext)
+  const [loading, setLoading] = useState(false)
 
   const handleSignin =async(e)=>{
     e.preventDefault()

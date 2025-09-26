@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from "react";
 
 export default function AdminDashboard() {
   const [data, setData] = useState([])
-  const {loading, setLoading} = useContext(UserAuthContext)
+  const [loading, setLoading] = useState(false)
 
   const getOrders =async()=>{
     setLoading(true)
