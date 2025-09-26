@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import LogInInput from '@/components/LogInInput'
 import { UserAuthContext } from '@/context/AuthContext'
 import { BackendUrl } from '@/utils/BackendUrl'
@@ -11,8 +11,13 @@ export default function SignIn() {
   const emailRef = useRef('')
   const passwordRef = useRef('')
   const router = useRouter()
-  const {isAuthenticated, setIsAuthenticated} = useContext(UserAuthContext)
   const [loading, setLoading] = useState(false)
+
+  const authContext = useContext(UserAuthContext)
+  if(!authContext){
+    return
+  }
+const {isAuthenticated, setIsAuthenticated} = authContext
 
   const handleSignin =async(e)=>{
     e.preventDefault()

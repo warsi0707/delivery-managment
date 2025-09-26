@@ -1,12 +1,10 @@
 "use client"
 import { BackendUrl } from '@/utils/BackendUrl'
-import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
 
-export default function OrderDetails() {
-    const {id} = useParams()
+export default function OrderDetails({id}) {
     const [data, setData] = useState({})
     const [loading, setLoading] = useState(false)
     const [status, setStatus] = useState("")
